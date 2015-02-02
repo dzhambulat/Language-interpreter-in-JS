@@ -31,3 +31,21 @@ describe('scanner',function(){
 
     }) ;
 });
+
+describe('scanner',function(){
+    it('operators',function(){
+        var lexer=new Lexer();
+        var text='1 = 2-1*4';
+
+        var res=lexer.scanOperators(text);
+
+        expect(res.length).toBe(3);
+        expect(res[0].value).toBe('=');
+        expect(res[0].index).toBe(text.indexOf('='));
+        expect(res[1].value).toBe('-');
+        expect(res[1].index).toBe(text.indexOf('-'));
+        expect(res[2].value).toBe('*');
+        expect(res[2].index).toBe(text.indexOf('*'));
+
+    }) ;
+});
