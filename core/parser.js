@@ -9,10 +9,39 @@ function Parser(){
 Parser.prototype.CFG={
     S:['VS','C'],
     V:['let'],
-    C:['I','I PM'],
+    C:['I','IPM'],
     I:['id'],
     PM:['st'],
     VL:['I','st','num']
+}
+
+Parser.prototype.isTerminal=function(s)
+{
+    var fs=s.charCodeAt(0);
+    if(fs>=97 && fs<=122)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+Parser.prototype.isInQueue=function(queue,elem)
+{
+    return queue.some(function(el)
+    {
+        if (el.pointIndex==elem.pointIndex &&
+            el.products==elem.products)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    })
 }
 
 Parser.prototype.first=function(nt)
@@ -39,4 +68,39 @@ Parser.prototype.first=function(nt)
     }
 
     return terms;
+}
+
+Parser.prototype.closure=function(products)
+{
+    var queue=[];
+    var res=[];
+    queue.push.apply(queue,products);
+
+
+    while (queue.length!=0)
+    {
+        var p=queue.shift();
+        var point= p.pointIndex;
+        res.push(p);
+
+        if (!this.isTerminal(p.products[point]))
+        {
+            var currentProducts=this.CFG[p.products[point]];
+
+            for (var i in currentProducts)
+            {
+                var e={
+                    pointIndex:0,
+                    products:currentProducts[i],
+                    symbol:p.products[point]
+                };
+                if(!this.isInQueue(queue,e))
+                {
+                    queue.push(e);
+                }
+            }
+        }
+    }
+
+    return res;
 }
