@@ -104,3 +104,10 @@ Parser.prototype.closure=function(products)
 
     return res;
 }
+
+Parser.prototype.goto=function(products,symbol)
+{
+    var res=[];
+
+
+}
