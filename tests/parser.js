@@ -63,3 +63,48 @@ describe('parser',function(){
 
     }); ;
 });
+describe('parser',function(){
+    it('goto',function(){
+        var parser=new Parser();
+
+        expect(parser.goto([
+            {pointIndex:0,
+                products:parser.CFG['S'][0],
+                symbol:'S'},
+            {pointIndex:0,
+                products:parser.CFG['C'][0],
+                symbol:'C'},
+            {pointIndex:0,
+                products:parser.CFG['V'][0],
+                symbol:'V'},
+            {pointIndex:0,
+                products:parser.CFG['I'][0],
+                symbol:'I'}
+        ],'id')).toBe(
+            [
+                {pointIndex:1,
+                    products:parser.CFG['I'][0],
+                    symbol:'I'}
+            ]
+        );
+
+        expect(parser.goto([
+            {pointIndex:0,
+                products:parser.CFG['C'][1],
+                symbol:'C'},
+            {pointIndex:0,
+                products:parser.CFG['VL'][0],
+                symbol:'VL'}
+        ],'I')).toBe(
+            [
+                {pointIndex:1,
+                    products:parser.CFG['C'][1],
+                    symbol:'C'},
+                {pointIndex:1,
+                    products:parser.CFG['VL'][0],
+                    symbol:'VL'}
+            ]
+        );
+
+    }); ;
+});

@@ -7,9 +7,9 @@ function Parser(){
 }
 
 Parser.prototype.CFG={
-    S:['VS','C'],
+    S:['V S','C'],
     V:['let'],
-    C:['I','IPM'],
+    C:['I','I PM'],
     I:['id'],
     PM:['st'],
     VL:['I','st','num']
@@ -83,16 +83,17 @@ Parser.prototype.closure=function(products)
         var point= p.pointIndex;
         res.push(p);
 
-        if (!this.isTerminal(p.products[point]))
+        var product= p.products.split(' ');
+        if (!this.isTerminal(product[point]))
         {
-            var currentProducts=this.CFG[p.products[point]];
+            var currentProduct=this.CFG[product[point]];
 
-            for (var i in currentProducts)
+            for (var i in currentProduct)
             {
                 var e={
                     pointIndex:0,
-                    products:currentProducts[i],
-                    symbol:p.products[point]
+                    products:currentProduct[i],
+                    symbol:product[point]
                 };
                 if(!this.isInQueue(queue,e))
                 {
@@ -109,5 +110,22 @@ Parser.prototype.goto=function(products,symbol)
 {
     var res=[];
 
+    for (var i in products)
+    {
+        var p=products[i];
+        var product= p.products.split(' ');
+        if (product[p.pointIndex]===symbol)
+        {
+            res.push(
+                {
+                    pointIndex:++p.pointIndex,
+                    products: p.products,
+                    symbol: p.symbol
+                }
+            );
+        }
+    }
+
+    return res;
 
 }
