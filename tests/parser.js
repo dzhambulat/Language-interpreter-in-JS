@@ -44,7 +44,7 @@ describe('parser',function(){
             {pointIndex:0,
                 products:parser.CFG['C'][0],
                 symbol:'C'}
-        ])).toBe(
+        ])).toEqual(
             [
                 {pointIndex:0,
                     products:parser.CFG['S'][0],
@@ -80,7 +80,7 @@ describe('parser',function(){
             {pointIndex:0,
                 products:parser.CFG['I'][0],
                 symbol:'I'}
-        ],'id')).toBe(
+        ],'id')).toEqual(
             [
                 {pointIndex:1,
                     products:parser.CFG['I'][0],
@@ -95,7 +95,7 @@ describe('parser',function(){
             {pointIndex:0,
                 products:parser.CFG['VL'][0],
                 symbol:'VL'}
-        ],'I')).toBe(
+        ],'I')).toEqual(
             [
                 {pointIndex:1,
                     products:parser.CFG['C'][1],
@@ -108,3 +108,35 @@ describe('parser',function(){
 
     }); ;
 });
+
+describe('parser',function(){
+    it('reduce',function(){
+        var parser=new Parser();
+
+        expect(parser.reduce(
+            {pointIndex:0,
+                products:parser.CFG['VL'][0],
+                symbol:'VL'}
+
+        ,[{
+            isToken:true,
+            value:{
+                type:'id',
+                value:'a'
+            }
+        }])).toEqual(
+            {
+                isToken:false,
+                value:[{
+                    isToken:true,
+                    value:{
+                          type:'id',
+                          value:'a'
+                    }
+                }]
+            }
+        );
+
+    }); ;
+});
+

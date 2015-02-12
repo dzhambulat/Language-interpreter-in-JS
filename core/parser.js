@@ -129,3 +129,21 @@ Parser.prototype.goto=function(products,symbol)
     return res;
 
 }
+
+Parser.prototype.reduce=function(product,stack)
+{
+    var node= {
+        isToken: false
+    }
+    var presult=[];
+
+    for (var i=0;i<=product.pointIndex;i++)
+    {
+        var el=stack.pop();
+        presult.unshift(el);
+    }
+
+    node.value=presult;
+
+    return node;
+}
