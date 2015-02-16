@@ -137,7 +137,7 @@ Parser.prototype.reduce=function(product,stack)
     }
     var presult=[];
 
-    for (var i=0;i<=product.pointIndex;i++)
+    for (var i=0;i<product.pointIndex;i++)
     {
         var el=stack.pop();
         presult.unshift(el);

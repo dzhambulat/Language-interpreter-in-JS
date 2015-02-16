@@ -114,7 +114,7 @@ describe('parser',function(){
         var parser=new Parser();
 
         expect(parser.reduce(
-            {pointIndex:0,
+            {pointIndex:1,
                 products:parser.CFG['VL'][0],
                 symbol:'VL'}
 

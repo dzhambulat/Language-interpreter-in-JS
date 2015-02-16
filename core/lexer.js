@@ -23,6 +23,7 @@ Lexer.prototype.scanStrings=function (text)
         stringToken.index=rgRes.index;
 
         stringTokens.push(stringToken);
+
     }
 
     return stringTokens;
