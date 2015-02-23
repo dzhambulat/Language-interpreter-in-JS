@@ -7,12 +7,9 @@ function Parser(){
 }
 
 Parser.prototype.CFG={
-    S:['V S','C'],
-    V:['let'],
-    C:['I','I PM'],
-    I:['id'],
-    PM:['st'],
-    VL:['I','st','num']
+    S:['E'],
+    E:['T lpoperator E','T'],
+    T:['( E )','T hpoperator E','number']
 }
 
 Parser.prototype.isTerminal=function(s)

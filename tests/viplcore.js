@@ -4,7 +4,7 @@
 describe('viplcore',function(){
     it('getTokens',function(){
         var vipl=new ViplCore();
-        var tokens=vipl.getTokens('== "t+est1" id1 name + "string"');
+        var tokens=vipl.getTokens('== "t+est1" id1  name  + "string"');
         expect(tokens[0]).toEqual(
 
                 {
@@ -28,7 +28,7 @@ describe('viplcore',function(){
                 {
                     type:'id',
                     value:'id1',
-                    index:12
+                    index:11
                 }
 
         );
@@ -46,7 +46,7 @@ describe('viplcore',function(){
                 {
                     type:'operator',
                     value:'+',
-                    index:22
+                    index:23
                 }
 
         );

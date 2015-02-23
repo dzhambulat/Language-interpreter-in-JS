@@ -7,6 +7,18 @@ function Lexer()
 
 }
 
+Lexer.prototype.maskString=function(text,re,symbol,len)
+{
+    var mask='';
+
+    for(var i=0;i<len;i++)
+    {
+        mask+=symbol;
+    }
+
+    return text.replace(re,mask);
+}
+
 Lexer.prototype.scanStrings=function (text)
 {
     var re=/"([\w\W]*?)"/ig;
@@ -24,8 +36,9 @@ Lexer.prototype.scanStrings=function (text)
 
         stringTokens.push(stringToken);
 
+        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
     }
-
+    stringTokens.text=text;
     return stringTokens;
 }
 
@@ -44,8 +57,11 @@ Lexer.prototype.scanIdentificators=function(text)
         idToken.index=rgRes.index;
 
         idTokens.push(idToken);
+
+        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
     }
 
+    idTokens.text=text;
     return idTokens;
 }
 
@@ -64,7 +80,10 @@ Lexer.prototype.scanOperators=function(text)
         opToken.index=rgRes.index;
 
         opTokens.push(opToken);
+        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
     }
+
+    opTokens.text=text;
 
     return opTokens;
 }
