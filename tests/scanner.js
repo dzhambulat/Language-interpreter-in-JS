@@ -49,3 +49,27 @@ describe('scanner',function(){
 
     }) ;
 });
+
+describe('scanner',function(){
+
+    it('lp and hp ariphmetic operators',function(){
+        var lexer=new Lexer();
+        var text='1=1+2-1*4';
+
+        var res=lexer.scanLpAriphmeticOperators(text);
+
+        expect(res.length).toBe(2);
+        expect(res[0].value).toBe('+');
+        expect(res[0].index).toBe(3);
+        expect(res[1].value).toBe('-');
+        expect(res[1].index).toBe(5);
+
+        res=lexer.scanHpAriphmeticOperators(res.text);
+
+        expect(res.length).toBe(1);
+        expect(res[0].value).toBe('*');
+        expect(res[0].index).toBe(7);
+
+
+    }) ;
+});

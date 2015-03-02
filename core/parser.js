@@ -47,11 +47,10 @@ Parser.prototype.first=function(nt)
     cands.push.apply(cands,this.CFG[nt]);
     var terms=[];
 
-    var i=0;
     while (cands.length>0)
     {
         var cand=cands[0];
-        cands.splice(i,1);
+        cands.splice(0,1);
 
         var fs=cand.charCodeAt(0);
         if(fs>=97 && fs<=122)
@@ -67,12 +66,13 @@ Parser.prototype.first=function(nt)
     return terms;
 }
 
-Parser.prototype.closure=function(products)
+Parser.prototype.closure=function(products,stateIndex)
 {
+    var e;
     var queue=[];
     var res=[];
     queue.push.apply(queue,products);
-
+    var isClosured=false;
 
     while (queue.length!=0)
     {
@@ -83,14 +83,16 @@ Parser.prototype.closure=function(products)
         var product= p.products.split(' ');
         if (!this.isTerminal(product[point]))
         {
+            isClosured=true;
             var currentProduct=this.CFG[product[point]];
 
             for (var i in currentProduct)
             {
-                var e={
-                    pointIndex:0,
-                    products:currentProduct[i],
-                    symbol:product[point]
+                e = {
+                    pointIndex: 0,
+                    products: currentProduct[i],
+                    symbol: product[point],
+                    'stateIndex': stateIndex
                 };
                 if(!this.isInQueue(queue,e))
                 {
@@ -98,6 +100,11 @@ Parser.prototype.closure=function(products)
                 }
             }
         }
+    }
+
+    if(!isClosured)
+    {
+        return null;
     }
 
     return res;
@@ -130,6 +137,7 @@ Parser.prototype.goto=function(products,symbol)
 Parser.prototype.reduce=function(product,stack)
 {
     var node= {
+        symbol:product.symbol,
         isToken: false
     }
     var presult=[];

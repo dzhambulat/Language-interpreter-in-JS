@@ -87,3 +87,35 @@ Lexer.prototype.scanOperators=function(text)
 
     return opTokens;
 }
+
+Lexer.prototype.scanTokens=function(text,re,type)
+{
+    var tokens=[];
+    var rgRes=null;
+
+    while ((rgRes=re.exec(text))!=null)
+    {
+        var token= {
+            type: type,
+            value: rgRes[1],
+            index: rgRes.index
+        }
+        tokens.push(token);
+        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
+    }
+
+    tokens.text=text;
+    return tokens;
+}
+
+Lexer.prototype.scanLpAriphmeticOperators=function(text)
+{
+   var re=/(\+|-)/g;
+   return this.scanTokens(text,re,'lpoperator');
+}
+
+Lexer.prototype.scanHpAriphmeticOperators=function(text)
+{
+    var re=/(\*|\/)/g;
+    return this.scanTokens(text,re,'hpoperator');
+}

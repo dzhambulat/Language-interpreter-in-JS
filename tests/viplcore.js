@@ -2,9 +2,13 @@
  * Created by Dzhambulat on 17.02.2015.
  */
 describe('viplcore',function(){
+
     it('getTokens',function(){
+
         var vipl=new ViplCore();
+
         var tokens=vipl.getTokens('== "t+est1" id1  name  + "string"');
+
         expect(tokens[0]).toEqual(
 
                 {
@@ -60,5 +64,22 @@ describe('viplcore',function(){
 
         );
 
+    });
+});
+
+describe('viplcore',function(){
+
+  /*  it('interpret',function(){
+
+        var vipl=new ViplCore();
+        vipl.interpret("1+3+7");
+    });*/
+    var vipl=new ViplCore();
+
+    it('reduceProduct',function(){
+       vipl.reduceProduct(
+            [{}],
+           {}
+       );
     });
 });
