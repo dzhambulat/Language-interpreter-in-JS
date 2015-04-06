@@ -29,8 +29,8 @@ Parser.prototype.isInQueue=function(queue,elem)
 {
     return queue.some(function(el)
     {
-        if (el.pointIndex==elem.pointIndex &&
-            el.products==elem.products)
+        if (el.pointIndex===elem.pointIndex &&
+            el.products===elem.products)
         {
             return true;
         }
@@ -72,18 +72,18 @@ Parser.prototype.closure=function(products,stateIndex)
     var queue=[];
     var res=[];
     queue.push.apply(queue,products);
+    res.push.apply(res,products);
     var isClosured=false;
 
     while (queue.length!=0)
     {
         var p=queue.shift();
         var point= p.pointIndex;
-        res.push(p);
-
         var product= p.products.split(' ');
-        if (!this.isTerminal(product[point]))
+
+        if (p.pointIndex!=product.length && !this.isTerminal(product[point]))
         {
-            isClosured=true;
+
             var currentProduct=this.CFG[product[point]];
 
             for (var i in currentProduct)
@@ -94,9 +94,12 @@ Parser.prototype.closure=function(products,stateIndex)
                     symbol: product[point],
                     'stateIndex': stateIndex
                 };
-                if(!this.isInQueue(queue,e))
+                if(!this.isInQueue(res,e))
                 {
+
+                    isClosured=true;
                     queue.push(e);
+                    res.push(e);
                 }
             }
         }
@@ -124,7 +127,8 @@ Parser.prototype.goto=function(products,symbol)
                 {
                     pointIndex:++p.pointIndex,
                     products: p.products,
-                    symbol: p.symbol
+                    symbol: p.symbol,
+                    stateIndex: p.stateIndex
                 }
             );
         }

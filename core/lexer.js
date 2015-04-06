@@ -65,27 +65,27 @@ Lexer.prototype.scanIdentificators=function(text)
     return idTokens;
 }
 
-Lexer.prototype.scanOperators=function(text)
+Lexer.prototype.scanNumbers=function(text)
 {
-    var re=/((==|=|\+|-|\*|\/))/ig;
+    var re=/(\d+?)/ig;
     var rgRes=null;
-    var opTokens=[];
+    var numTokens=[];
 
     while ((rgRes=re.exec(text))!=null)
     {
-        var opToken={
-            type:'operator'
+        var numToken={
+            type:'number'
         };
-        opToken.value=rgRes[1];
-        opToken.index=rgRes.index;
+        numToken.value=rgRes[1];
+        numToken.index=rgRes.index;
 
-        opTokens.push(opToken);
+        numTokens.push(numToken);
         text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
     }
 
-    opTokens.text=text;
+    numTokens.text=text;
 
-    return opTokens;
+    return numTokens;
 }
 
 Lexer.prototype.scanTokens=function(text,re,type)

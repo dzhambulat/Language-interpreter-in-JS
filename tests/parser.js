@@ -8,14 +8,12 @@ describe('parser',function(){
         var parser=new Parser();
 
         expect(parser.isInQueue([
-            {pointIndex:4,
-            products:parser.CFG['S'][0]},
+            {pointIndex:1,
+            products:'E T add'},
             {pointIndex:0,
-                products:parser.CFG['S'][0]},
-            {pointIndex:3,
-                products:parser.CFG['VL'][0]}
-        ], {pointIndex:0,
-            products:parser.CFG['S'][0]})).toBe(true);
+                products:'D F A'}
+        ], {pointIndex:1,
+            products:'E T add'})).toBe(true);
 
     }); ;
 });
@@ -27,27 +25,40 @@ describe('parser',function(){
 
         expect(parser.closure([
             {pointIndex:0,
-                products:parser.CFG['S'][0],
-                symbol:'S'
+                products:'T lpoperator E',
+                symbol:'E',
+                stateIndex:1
             },
 
             {pointIndex:0,
-                products:parser.CFG['C'][0],
-                symbol:'C'}
-        ])).toEqual(
+                products:'T',
+                symbol:'E',
+                stateIndex:1}
+        ],2)).toEqual(
             [
                 {pointIndex:0,
-                    products:parser.CFG['S'][0],
-                    symbol:'S'},
+                    products:'T lpoperator E',
+                    symbol:'E',
+                    stateIndex:1
+                },
                 {pointIndex:0,
-                    products:parser.CFG['C'][0],
-                    symbol:'C'},
+                    products:'T',
+                    symbol:'E',
+                    stateIndex:1},
                 {pointIndex:0,
-                    products:parser.CFG['V'][0],
-                    symbol:'V'},
+                    products:'( E )',
+                    symbol:'T',
+                    stateIndex:2},
                 {pointIndex:0,
-                    products:parser.CFG['I'][0],
-                    symbol:'I'}
+                    products:'T hpoperator E',
+                    symbol:'T',
+                    stateIndex:2},
+                {
+                    pointIndex:0,
+                    products:'number',
+                    symbol:'T',
+                    stateIndex:2
+                }
             ]
         );
 
@@ -58,45 +69,26 @@ describe('parser',function(){
         var parser=new Parser();
 
         expect(parser.goto([
+            {pointIndex:1,
+                products:'T lpoperator E',
+                symbol:'E',
+                stateIndex:1
+            },
+
             {pointIndex:0,
-                products:parser.CFG['S'][0],
-                symbol:'S'},
-            {pointIndex:0,
-                products:parser.CFG['C'][0],
-                symbol:'C'},
-            {pointIndex:0,
-                products:parser.CFG['V'][0],
-                symbol:'V'},
-            {pointIndex:0,
-                products:parser.CFG['I'][0],
-                symbol:'I'}
-        ],'id')).toEqual(
+                products:'T',
+                symbol:'E',
+                stateIndex:1}
+        ],'lpoperator')).toEqual(
             [
-                {pointIndex:1,
-                    products:parser.CFG['I'][0],
-                    symbol:'I'}
+                {pointIndex:2,
+                    products:'T lpoperator E',
+                    symbol:'E'}
             ]
         );
 
-        expect(parser.goto([
-            {pointIndex:0,
-                products:parser.CFG['C'][1],
-                symbol:'C'},
-            {pointIndex:0,
-                products:parser.CFG['VL'][0],
-                symbol:'VL'}
-        ],'I')).toEqual(
-            [
-                {pointIndex:1,
-                    products:parser.CFG['C'][1],
-                    symbol:'C'},
-                {pointIndex:1,
-                    products:parser.CFG['VL'][0],
-                    symbol:'VL'}
-            ]
-        );
 
-    }); ;
+    });
 });
 
 describe('parser',function(){
@@ -105,14 +97,16 @@ describe('parser',function(){
 
         expect(parser.reduce(
             {pointIndex:1,
-                products:parser.CFG['VL'][0],
-                symbol:'VL'}
+                products:'T lpoperator E',
+                symbol:'E',
+                stateIndex:1
+            }
 
         ,[{
             isToken:true,
             value:{
-                type:'id',
-                value:'a'
+                type:'lpoperator',
+                value:'+'
             }
         }])).toEqual(
             {
@@ -120,7 +114,7 @@ describe('parser',function(){
                 value:[{
                     isToken:true,
                     value:{
-                          type:'id',
+                          type:'lpoperator',
                           value:'a'
                     }
                 }]

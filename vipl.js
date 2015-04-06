@@ -19,14 +19,18 @@ ViplCore.prototype.getTokens=function(text)
     delete v.text;
     tokens.push.apply(tokens,v);
 
-    v=this.lexer.scanOperators(text);
+    v=this.lexer.scanNumbers(text);
+    text= v.text;
+    delete v.text;
+    tokens.push.apply(tokens,v);
+
+    v=this.lexer.scanLpAriphmeticOperators(text);
     text= v.text;
 
     delete v.text;
     tokens.push.apply(tokens,v);
 
-    v=this.lexer.scanIdentificators(text);
-    text= v.text;
+    v=this.lexer.scanHpAriphmeticOperators(text);
 
     delete v.text;
     tokens.push.apply(tokens,v);
@@ -42,6 +46,10 @@ ViplCore.prototype.getTokens=function(text)
 
 ViplCore.prototype.shift=function()
 {
+    if(this.tokenIndex==this.tokens.length)
+    {
+        return null;
+    }
     var token=this.tokens[this.tokenIndex];
     this.tokenIndex+=1;
 
@@ -56,7 +64,7 @@ ViplCore.prototype.reduceProduct=function(state,token)
     {
         var product=state[i];
         var p=product.products.split(' ');
-        if (p[product.pointIndex]===token.type)
+        if (token!=null && p[product.pointIndex]===token.type)
         {
             isShift=true;
             break;
@@ -86,21 +94,23 @@ ViplCore.prototype.interpret=function(text)
         {
             pointIndex: 0,
             products: 'S',
-            symbol: 'SA'
+            symbol: 'SA',
+            stateIndex:0
         }]
     );
-    states[0]=this.parser.closure(states[0]); //states of LR parser
+
+    states[0]=this.parser.closure(states[0],0); //states of LR parser
+
     var currentState=0; //current state
     var endParse=false;
     var token=this.shift();
     while (!endParse)
     {
-        var newState=this.parser.closure(states[currentState],currentState);
 
+        var newState=this.parser.closure(states[currentState],currentState);
         if(newState!=null)
         {
-            states.push(newState);
-            currentState+=1;
+            states[currentState]=newState;
             continue;
         }
         else
@@ -108,26 +118,38 @@ ViplCore.prototype.interpret=function(text)
             var cstate=states[currentState];
             var productToReduce=this.reduceProduct(cstate,token)
 
-            if (!productToReduce)
+            if (productToReduce==null)
             {
+                if (token==null)
+                {
+                    endParse=true;
+                    continue
+                }
                 genStack.push(token);
+
                 newState=this.parser.goto(states[currentState],token.type);
                 states.push(newState);
                 currentState+=1;
+                token=this.shift();
             }
             else
             {
+
                 if (productToReduce.symbol==='SA')
                 {
                     endParse=true;
                 }
+
                 var reducedProduct=this.parser.reduce(productToReduce,genStack);
+
                 genStack.push(reducedProduct);
-                newState=this.parser.goto(cstate,productToReduce.symbol);
+                newState=this.parser.goto(states[productToReduce.stateIndex],productToReduce.symbol);
                 currentState+=1;
                 states.push(newState);
             }
         }
     }
+
+    alert(reducedProduct);
 
 }

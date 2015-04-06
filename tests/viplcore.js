@@ -77,9 +77,73 @@ describe('viplcore',function(){
     var vipl=new ViplCore();
 
     it('reduceProduct',function(){
-       vipl.reduceProduct(
-            [{}],
-           {}
+       expect(vipl.reduceProduct(
+            [{
+                products:'E T add',
+                pointIndex:3,
+                symbol:'S'
+            },
+            {
+                products:'E add G',
+                pointIndex:1,
+                symbol:'C'
+            }],
+           {
+               type:'lpoperator'
+           }
+       )).toEqual(
+           {
+               products:'E T add',
+               pointIndex:3,
+               symbol:'S'
+           }
        );
     });
+
+
+    it('reduceProduct not reduce',function()
+    {
+        expect(vipl.reduceProduct(
+            [{
+                products:'E T lpoperator',
+                pointIndex:2,
+                symbol:'S'
+            },
+                {
+                    products:'E add G',
+                    pointIndex:3,
+                    symbol:'C'
+                }],
+            {
+                type:'lpoperator'
+            }
+        )).toBe(null);
+
+        expect(vipl.reduceProduct(
+            [{
+                products:'E T lpoperator',
+                pointIndex:1,
+                symbol:'S'
+            },
+                {
+                    products:'E add G',
+                    pointIndex:3,
+                    symbol:'C'
+                }],
+            {
+                type:'lpoperator'
+            }
+        )).toEqual(   {
+            products:'E add G',
+            pointIndex:3,
+            symbol:'C'
+        });
+    });
+
+    it('interpret',function()
+    {
+        vipl.interpret("1+2*3");
+    });
+
+
 });
