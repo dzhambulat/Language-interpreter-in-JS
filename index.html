@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <script src="content/jquery-2.1.4.min.js"></script>
+    <script src="content/bootstrap/js/bootstrap.min.js"></script>
+    <script src="core/lexer.js"></script>
+    <script src="core/parser.js"></script>
+    <script src="vipl.js"></script>
+    <link rel="stylesheet" href="content/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="content/bootstrap/css/bootstrap-theme.min.css"/>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="container">
+<div class="row">
+<div id="graphics" class="col-md-12"></div>
+</div>
+<div class="row">
+<div class="form-group col-md-12">
+
+    <label for="code">Code:</label>
+    <textarea class="form-control" rows="5" id="code"></textarea>
+    <button type="button" class="btn btn-success" id="done">Done</button>
+</div>
+</div>
+</div>
+<script>
+    var vipl=new ViplCore();
+    $('#done').click(function(){
+        vipl.interpret($('#code').val());
+    })
+</script>
+</body>
+</html>

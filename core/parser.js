@@ -9,7 +9,7 @@ function Parser(){
 Parser.prototype.CFG={
     S:['E'],
     E:['T lpoperator E','T'],
-    T:['( E )','T hpoperator E','number']
+    T:['( E )','T hpoperator T','number']
 }
 
 Parser.prototype.isTerminal=function(s)
@@ -125,7 +125,7 @@ Parser.prototype.goto=function(products,symbol)
         {
             res.push(
                 {
-                    pointIndex:++p.pointIndex,
+                    pointIndex:p.pointIndex+1,
                     products: p.products,
                     symbol: p.symbol,
                     stateIndex: p.stateIndex
