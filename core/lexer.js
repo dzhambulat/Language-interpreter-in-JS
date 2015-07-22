@@ -119,3 +119,9 @@ Lexer.prototype.scanHpAriphmeticOperators=function(text)
     var re=/(\*|\/)/g;
     return this.scanTokens(text,re,'hpoperator');
 }
+
+Lexer.prototype.scanAssigmentOperators=function(text)
+{
+    var re=/(=)/g;
+    return this.scanTokens(text,re,'assigment');
+}
