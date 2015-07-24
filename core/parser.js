@@ -8,7 +8,8 @@ function Parser(){
 
 Parser.prototype.CFG={
     S:['S ST','ST'],
-    ST:['id = AS'],
+    ST:['EQ'],
+    EQ:['id assigment AS'],
     AS:['E'],
     E:['T lpoperator E','T'],
     T:['( E )','T hpoperator T','number']
