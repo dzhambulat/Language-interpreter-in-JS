@@ -6,12 +6,16 @@ function Interpreter(){
 
 }
 
-Interpreter.ProcessAssign=function (syntaxNode){
+Interpreter.prototype.AddSymbolToTable(string,value)
+{
+
+}
+Interpreter.prototype.ProcessAssign=function (syntaxNode){
     var id=syntaxNode.value[0];
-    var value=syntaxNode.value[2];
+    var rightValue=syntaxNode.value[2];
     if(id.isToken && id.value.type==="id")
     {
-        if(value.isToken)
+        if(rightValue.isToken)
         {
 
         }
@@ -28,7 +32,7 @@ Interpreter.prototype.interpret=function(syntaxTree)
     switch (symbol)
     {
         case 'EQ':
-
+            this.ProcessAssign(syntaxTree);
             break;
     }
 }
