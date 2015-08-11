@@ -7,18 +7,17 @@ function Lexer()
 
 }
 
-Lexer.prototype.maskString=function(text,re,symbol,len)
-{
-    var mask='';
+Lexer.prototype.maskString=function(text,re,symbol) {
+    return text.replace(re, function (match) {
 
-    for(var i=0;i<len;i++)
-    {
-        mask+=symbol;
-    }
+        var mask = '';
 
-    return text.replace(re,mask);
+        for (var i = 0; i < match.length; i++) {
+            mask += symbol;
+        }
+        return mask;
+    });
 }
-
 Lexer.prototype.scanStrings=function (text)
 {
     var re=/"([\w\W]*?)"/ig;
@@ -36,15 +35,17 @@ Lexer.prototype.scanStrings=function (text)
 
         stringTokens.push(stringToken);
 
-        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
+
     }
+    text=this.maskString(text,re,'\x80');
     stringTokens.text=text;
     return stringTokens;
 }
 
 Lexer.prototype.scanIdentificators=function(text)
 {
-    var re=/\s([a-z_][\w]*)\s/ig;
+    var re;
+    re = /\s([a-z_][\w]*)/ig;
     var rgRes=null;
     var idTokens=[];
 
@@ -54,13 +55,13 @@ Lexer.prototype.scanIdentificators=function(text)
             type:'id'
         };
         idToken.value=rgRes[1];
-        idToken.index=rgRes.index;
+        idToken.index=rgRes.index+1;
 
         idTokens.push(idToken);
 
-        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
-    }
 
+    }
+    text=this.maskString(text,re,'\x80');
     idTokens.text=text;
     return idTokens;
 }
@@ -80,9 +81,9 @@ Lexer.prototype.scanNumbers=function(text)
         numToken.index=rgRes.index;
 
         numTokens.push(numToken);
-        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
-    }
 
+    }
+    text=this.maskString(text,re,'\x80');
     numTokens.text=text;
 
     return numTokens;
@@ -101,9 +102,10 @@ Lexer.prototype.scanTokens=function(text,re,type)
             index: rgRes.index
         }
         tokens.push(token);
-        text=this.maskString(text,rgRes[0],'\x7F',re.lastIndex-rgRes.index);
+
     }
 
+    text=this.maskString(text,re,'\x80');
     tokens.text=text;
     return tokens;
 }

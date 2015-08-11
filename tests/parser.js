@@ -20,51 +20,6 @@ describe('parser',function(){
 
 
 describe('parser',function(){
-    it('closure',function(){
-        var parser=new Parser();
-
-        expect(parser.closure([
-            {pointIndex:0,
-                products:'T lpoperator E',
-                symbol:'E',
-                stateIndex:1
-            },
-
-            {pointIndex:0,
-                products:'T',
-                symbol:'E',
-                stateIndex:1}
-        ],2)).toEqual(
-            [
-                {pointIndex:0,
-                    products:'T lpoperator E',
-                    symbol:'E',
-                    stateIndex:1
-                },
-                {pointIndex:0,
-                    products:'T',
-                    symbol:'E',
-                    stateIndex:1},
-                {pointIndex:0,
-                    products:'( E )',
-                    symbol:'T',
-                    stateIndex:2},
-                {pointIndex:0,
-                    products:'T hpoperator E',
-                    symbol:'T',
-                    stateIndex:2},
-                {
-                    pointIndex:0,
-                    products:'number',
-                    symbol:'T',
-                    stateIndex:2
-                }
-            ]
-        );
-
-    }); ;
-});
-describe('parser',function(){
     it('goto',function(){
         var parser=new Parser();
 
@@ -83,7 +38,7 @@ describe('parser',function(){
             [
                 {pointIndex:2,
                     products:'T lpoperator E',
-                    symbol:'E'}
+                    symbol:'E',stateIndex:1}
             ]
         );
 
@@ -97,25 +52,26 @@ describe('parser',function(){
 
         expect(parser.reduce(
             {pointIndex:1,
-                products:'T lpoperator E',
-                symbol:'E',
+                products:'number',
+                symbol:'T',
                 stateIndex:1
             }
 
         ,[{
             isToken:true,
             value:{
-                type:'lpoperator',
-                value:'+'
+                type:'number',
+                value:'9'
             }
         }])).toEqual(
             {
                 isToken:false,
+                symbol:'T',
                 value:[{
                     isToken:true,
                     value:{
-                          type:'lpoperator',
-                          value:'a'
+                          type:'number',
+                          value:'9'
                     }
                 }]
             }

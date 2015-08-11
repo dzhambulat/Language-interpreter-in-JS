@@ -26,27 +26,48 @@ Interpreter.prototype.processAssign=function (syntaxNode){
         if(rightValue.isToken)
         {
             idName=id.value.value;
-            var symbol=this.addSymbodlToTable(idName,rightValue.value.value);
+            var symbol=this.addSymbolToTable(idName,rightValue.value.value);
             symbol.type=rightValue.value.value.type;
+        }
+        else if (rightValue.symbol==='AS')
+        {
+            idValue=this.processAriphmetic(rightValue[0])
+            var symbol=this.addSymbolToTable(idName,idValue);
+            symbol.type='number';
         }
     }
 };
 
 Interpreter.prototype.processAriphmetic=function (syntaxNode){
 
+    function processT(syntaxNode)
+    {
+        if(syntaxNode.values[0].isToken)
+        {
+            return syntaxNode.values[0].value;
+        }
+    }
+    if(syntaxNode.values.length===3)
+    {
+
+    }
+    else
+    {
+        return processT(syntaxNode.values[0]);
+    }
+
 }
 Interpreter.prototype.interpret=function(syntaxTree)
 {
-    if(syntaxTree.isToken)
-    {
-        return syntaxTree.value;
-    }
     var symbol=syntaxTree.symbol;
 
     switch (symbol)
     {
         case 'EQ':
             this.processAssign(syntaxTree);
+            break;
+        case 'SA':
+            this.interpret(syntaxTree.values[0]);
             break;
     }
 }

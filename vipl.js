@@ -19,6 +19,11 @@ ViplCore.prototype.getTokens=function(text)
     delete v.text;
     tokens.push.apply(tokens,v);
 
+    v=this.lexer.scanIdentificators(text);
+    text= v.text;
+    delete v.text;
+    tokens.push.apply(tokens,v);
+
     v=this.lexer.scanNumbers(text);
     text= v.text;
     delete v.text;
@@ -98,7 +103,7 @@ ViplCore.prototype.interpret=function(text)
     states.push([
         {
             pointIndex: 0,
-            products: 'AS',
+            products: 'EQ',
             symbol: 'SA',
             stateIndex:0
         }]

@@ -18,7 +18,7 @@ describe('scanner',function(){
 });
 
 describe('scanner',function(){
-    it('identificators',function(){
+    it('must find correct identificators',function(){
         var lexer=new Lexer();
         var text='1dfsf id1 _id .dfdff';
         var res=lexer.scanIdentificators(text);
@@ -27,28 +27,11 @@ describe('scanner',function(){
         expect(res[0].value).toBe('id1');
         expect(res[0].index).toBe(text.indexOf('id1'));
         expect(res[1].value).toBe('_id');
-        expect(res[1].index).toBe(text.indexOf('_id"'));
+        expect(res[1].index).toBe(text.indexOf('_id'));
 
     }) ;
 });
 
-describe('scanner',function(){
-    it('operators',function(){
-        var lexer=new Lexer();
-        var text='1 = 2-1*4';
-
-        var res=lexer.scanOperators(text);
-
-        expect(res.length).toBe(3);
-        expect(res[0].value).toBe('=');
-        expect(res[0].index).toBe(text.indexOf('='));
-        expect(res[1].value).toBe('-');
-        expect(res[1].index).toBe(text.indexOf('-'));
-        expect(res[2].value).toBe('*');
-        expect(res[2].index).toBe(text.indexOf('*'));
-
-    }) ;
-});
 
 describe('scanner',function(){
 

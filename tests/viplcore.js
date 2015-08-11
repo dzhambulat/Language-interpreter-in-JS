@@ -7,13 +7,13 @@ describe('viplcore',function(){
 
         var vipl=new ViplCore();
 
-        var tokens=vipl.getTokens('== "t+est1" id1  name  + "string"');
+        var tokens=vipl.getTokens('= "t+est1" id1  name  + "string"');
 
         expect(tokens[0]).toEqual(
 
                 {
-                    type:'operator',
-                    value:'==',
+                    type:'assigment',
+                    value:'=',
                     index:0
                 }
 
@@ -23,7 +23,7 @@ describe('viplcore',function(){
                 {
                     type:'string',
                     value:'t+est1',
-                    index:3
+                    index:2
                 }
 
         );
@@ -48,9 +48,9 @@ describe('viplcore',function(){
         expect(tokens[4]).toEqual(
 
                 {
-                    type:'operator',
+                    type:'lpoperator',
                     value:'+',
-                    index:23
+                    index:22
                 }
 
         );
@@ -59,7 +59,7 @@ describe('viplcore',function(){
                 {
                     type:'string',
                     value:'string',
-                    index:25
+                    index:24
                 }
 
         );
