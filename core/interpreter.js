@@ -21,17 +21,18 @@ Interpreter.prototype.addSymbolToTable=function(symbolName,value)
 Interpreter.prototype.processAssign=function (syntaxNode){
     var id=syntaxNode.value[0];
     var rightValue=syntaxNode.value[2];
-    if(id.isToken && id.value.type==="id")
+    if(id.isToken && id.type==="id")
     {
         if(rightValue.isToken)
         {
-            idName=id.value.value;
-            var symbol=this.addSymbolToTable(idName,rightValue.value.value);
-            symbol.type=rightValue.value.value.type;
+            var idName=id.value;
+            var symbol=this.addSymbolToTable(idName,rightValue.value);
+            symbol.type=rightValue.type;
         }
         else if (rightValue.symbol==='AS')
         {
-            idValue=this.processAriphmetic(rightValue[0])
+            var idName=id.value;
+            var idValue=this.processAriphmetic(rightValue.value[0])
             var symbol=this.addSymbolToTable(idName,idValue);
             symbol.type='number';
         }
@@ -40,20 +41,40 @@ Interpreter.prototype.processAssign=function (syntaxNode){
 
 Interpreter.prototype.processAriphmetic=function (syntaxNode){
 
+    var self=this;
     function processT(syntaxNode)
     {
-        if(syntaxNode.values[0].isToken)
+        if(syntaxNode.value[0].isToken)
         {
-            return syntaxNode.values[0].value;
+            return syntaxNode.value[0].value;
         }
     }
-    if(syntaxNode.values.length===3)
-    {
 
+    function processTlpoperatorE(syntaxNode)
+    {
+        if(syntaxNode.value.length===3)
+        {
+            var lp1=processT(syntaxNode.value[0]);
+            var operator=syntaxNode.value[1];
+            var lp2=self.processAriphmetic(syntaxNode.value[2]);
+
+            switch(operator.value)
+            {
+                case '+':
+                    return parseFloat(lp1)+parseFloat(lp2);
+                case '-':
+                    return parseFloat(lp1)-parseFloat(lp2);
+            }
+        }
+    }
+
+    if(syntaxNode.value.length===3)
+    {
+        return processTlpoperatorE(syntaxNode);
     }
     else
     {
-        return processT(syntaxNode.values[0]);
+        return processT(syntaxNode.value[0]);
     }
 
 }
@@ -67,7 +88,7 @@ Interpreter.prototype.interpret=function(syntaxTree)
             this.processAssign(syntaxTree);
             break;
         case 'SA':
-            this.interpret(syntaxTree.values[0]);
+            this.interpret(syntaxTree.value[0]);
             break;
     }
 }

@@ -142,7 +142,7 @@ describe('viplcore',function(){
 
     it('interpret',function()
     {
-        vipl.interpret("1*(2+3)");
+        vipl.interpret("2+3");
     });
 
 

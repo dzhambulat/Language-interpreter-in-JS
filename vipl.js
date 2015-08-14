@@ -135,6 +135,8 @@ ViplCore.prototype.interpret=function(text)
                     endParse=true;
                     continue
                 }
+
+                token.isToken=true;
                 genStack.push(token);
 
                 newState=this.parser.goto(states[currentState],token.type);
@@ -160,6 +162,6 @@ ViplCore.prototype.interpret=function(text)
         }
     }
 
-    alert(reducedProduct);
+   return reducedProduct;
 
 }
