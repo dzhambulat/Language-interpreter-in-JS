@@ -1,1 +1,1 @@
-ViPL
+Free context interpreter implementation in JS
